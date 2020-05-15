@@ -1,0 +1,13 @@
+.link:hover{
+    text-decoration: none !important;
+    color: #6fccdd !important;
+}
+
+.link{
+    color: white;
+    font-weight: bolder !important;
+}
+
+.selected{
+    color: #6fccdd;
+}

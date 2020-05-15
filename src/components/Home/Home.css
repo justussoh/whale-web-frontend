@@ -1,0 +1,9 @@
+.try-button{
+    border-radius: 50px !important;
+    font-weight: bold!important;
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.try-button .MuiButton-label:hover{
+    text-decoration: none!important;
+}
