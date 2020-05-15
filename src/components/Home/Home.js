@@ -22,7 +22,7 @@ class Home extends React.Component {
                     </Button>
                 </Grid>
                 <Grid item xs={7} className='d-flex align-content-center justify-content-center flex-column'>
-                    <img src='/images/homeCredit.svg' alt='credit-image'/>
+                    <img src='/images/homeCredit.svg' alt='credit'/>
                 </Grid>
             </Grid>
         )
