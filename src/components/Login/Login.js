@@ -6,18 +6,21 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import history from "../../history";
 
 
 class Login extends React.Component {
 
     state={
-        remember:false
+        rememberMe:false,
+        nric:'',
+        password:'',
     };
 
     componentDidMount() {
         if (localStorage.getItem("checked") && localStorage.getItem("checked") !== "") {
             this.setState({
-                email:localStorage.getItem("email"),
+                nric:localStorage.getItem("nric"),
                 password: localStorage.getItem("password"),
                 rememberMe: true,
             });
@@ -26,18 +29,23 @@ class Login extends React.Component {
 
     onLogin = (e) => {
         e.preventDefault();
-
-        if (this.state.email === '' || this.state.password === '') {
+        if (this.state.nric === '' || this.state.password === '') {
             window.alert('Field Cannot be Empty');
             return;
         }
 
-        if (this.state.rememberMe){
+        const user = this.props.signIn(this.state.nric, this.state.password);
+
+        if (user && this.state.rememberMe){
             localStorage.setItem("checked", "checked");
-            localStorage.setItem("email", this.state.email);
+            localStorage.setItem("nric", this.state.nric);
             localStorage.setItem("password", this.state.password);
         } else{
             localStorage.setItem("checked", "");
+        }
+
+        if (user){
+            history.push('/')
         }
     };
 
@@ -45,8 +53,8 @@ class Login extends React.Component {
         this.setState({rememberMe:e.target.checked})
     };
 
-    handleEmailChange = (e) => {
-        this.setState({ email: e.target.value });
+    handleNricChange = (e) => {
+        this.setState({ nric: e.target.value });
     };
 
     handlePasswordChange = (e) => {
@@ -71,12 +79,12 @@ class Login extends React.Component {
                                 required
                                 fullWidth
                                 id="email"
-                                label="Email Address"
+                                label="NRIC"
                                 name="email"
                                 autoComplete="email"
                                 autoFocus
-                                onChange={this.handleEmailChange}
-                                value={this.state.email}
+                                onChange={this.handleNricChange}
+                                value={this.state.nric}
                             />
                             <TextField
                                 variant="outlined"

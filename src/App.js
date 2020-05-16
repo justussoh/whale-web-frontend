@@ -24,24 +24,24 @@ import AddBankAccount from "./components/Bank/AddBankAccount";
 import { useAuth} from "../src/hooks/useAuth"
 
 export default function App() {
-    const {user} = useAuth();
+    const {user, signIn} = useAuth();
 
     return (
         <React.Fragment>
                 <Router history={history}>
-                    {true ?
+                    {user ?
                         <>
                             <NavDrawer/>
                             <TopAppBar/>
                             <div className='main-container-auth'>
                                 <Switch>
-                                    <Route exact path="/card" component={Card}/>
-                                    <Route exact path="/bank" component={Bank}/>
-                                    <Route exact path="/bank/open" component={AddBankAccount}/>
-                                    <Route exact path="/endorse" component={Endorse}/>
-                                    <Route exact path="/endorse/endorsement" component={Endorsement}/>
-                                    <Route exact path="/document" component={Card}/>
-                                    <Route path="/" component={Dashboard}/>
+                                    <Route exact path="/card" render={(props) => <Card {...props} user={user}/>}/>
+                                    <Route exact path="/bank" render={(props) => <Bank {...props} user={user}/>}/>
+                                    <Route exact path="/bank/open" render={(props) => <AddBankAccount {...props} user={user}/>}/>
+                                    <Route exact path="/endorse" render={(props) => <Endorse {...props} user={user}/>}/>
+                                    <Route exact path="/endorse/endorsement" render={(props) => <Endorsement {...props} user={user}/>}/>
+                                    <Route exact path="/document" render={(props) => <Card {...props} user={user}/>}/>
+                                    <Route path="/" render={(props) => <Dashboard {...props} user={user}/>}/>
                                 </Switch>
                             </div>
                         </>
@@ -51,7 +51,7 @@ export default function App() {
                             <div className='main-container'>
                                 <Switch>
                                     <Route exact path="/signup" component={SignUp}/>
-                                    <Route exact path="/login" component={Login}/>
+                                    <Route exact path="/login" render={(props) => <Login {...props} signIn={signIn}/>}/>
                                     <Route exact path="/about" component={About}/>
                                     <Route exact path="/endorse/endorsement" component={Endorsement}/>
                                     <Route path="/" component={Home}/>

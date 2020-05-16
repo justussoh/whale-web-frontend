@@ -7,6 +7,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from "@material-ui/core/Button";
+import axios from 'axios';
 import history from "../../history";
 
 const mark = [{value: 1, label: "1 Week"}, {value: 52, label: "52 Weeks"}]
@@ -19,6 +20,14 @@ class AddBankAccount extends React.Component {
         loanInstallments: 1,
         alternateCollateral: 'traditional',
     };
+
+    componentDidMount() {
+        axios.post('/users/calculateTotalCreditScore', {nric: this.props.user.nric}).then(res => {
+            if (res.status === 200) {
+                this.setState({creditScore: res.data})
+            }
+        });
+    }
 
     calculateInterest = () => {
         let {creditScore} = this.state;
@@ -102,8 +111,20 @@ class AddBankAccount extends React.Component {
     };
 
     onSubmit = () =>{
-        alert('takeLoan');
-        history.push('/bank')
+        axios.post('/users/createLoanAccount', {
+            client_id: this.props.user.client_id,
+            nric: this.props.user.nric,
+            loanAmount: this.state.loanAmount,
+            repaymentInstallments: this.state.loanInstallments,
+            interestRate: this.calculateInterest(),
+        }).then(res => {
+            if (res.status === 200) {
+                window.open('/bank',"_self")
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
+
     };
 
     render() {

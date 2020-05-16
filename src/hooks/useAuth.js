@@ -5,7 +5,6 @@ const authContext = createContext(null);
 
 export function ProvideAuth({ children }) {
     const auth = useProvideAuth();
-    console.log(auth);
     return <authContext.Provider value={auth}>{children}</authContext.Provider>;
 }
 
@@ -17,17 +16,23 @@ function useProvideAuth() {
     const [user, setUser] = useState(null);
 
     const signIn = (email, password) => {
-        return axios.post('/api/auth', {
-            email:email,
+        return axios.post('/users/login', {
+            nric:email,
             password:password
         }).then(res => {
-            if (res.statusCode === 200 && res.data.status === 'Authenticated') {
-                setUser(res.user);
-                return res.user;
+            if (res.status === 200) {
+                let user = res.data;
+                setUser(user);
+                setLocalStorageStatus(user);
+                return res.data;
             }
         }).catch(err => {
             console.log(err);
         });
+    };
+
+    const setLocalStorageStatus = (user) => {
+        window.localStorage.setItem("userId", JSON.stringify(user.id));
     };
 
     const signUp = (email, firstName, lastName, contactNumber, password) => {
@@ -63,21 +68,32 @@ function useProvideAuth() {
         });
     };
 
+    const loadAuthFromStore = () =>{
+        const localUserId = localStorage.getItem("userId");
+        if (localUserId) {
+            axios.get(`/users/retrieveById?id=${localUserId}`).then(res => {
+                if (res.status === 200) {
+                    let user = res.data;
+                    setUser(user);
+                    setLocalStorageStatus(user);
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+            return user
+        } else {
+            return false;
+        }
+    };
+
     // Subscribe to user on mount
     // Because this sets state in the callback it will cause any ...
     // ... component that utilizes this hook to re-render with the ...
     // ... latest auth object.
     useEffect(() => {
-        const unsubscribe = () => {
-            if (user) {
-                setUser(user);
-            } else {
-                setUser(false);
-            }
-        };
-
+        loadAuthFromStore();
         // Cleanup subscription on unmount
-        return () => unsubscribe();
+        // return () => unsubscribe();
     }, [user]);
 
     // Return the user object and auth methods
@@ -86,5 +102,6 @@ function useProvideAuth() {
         signIn,
         signUp,
         signOut,
+        loadAuthFromStore,
     };
 }

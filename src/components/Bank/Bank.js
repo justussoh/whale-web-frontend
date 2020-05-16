@@ -47,17 +47,7 @@ class Bank extends React.Component {
     render() {
         return (
             <Container maxWidth='md' style={{marginLeft: 0}}>
-                {this.state.accounts.length === 0 ?
-                    <Grid container spacing={0}>
-                        <Grid item xs={12}>
-                            <h1 className='text-center'>Looks like you have not created an bank account yet!</h1>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Button variant="contained" color="primary" fullWidth onClick={this.handleOpenAccount}>
-                                OPEN LOAN ACCOUNT
-                            </Button>
-                        </Grid>
-                    </Grid> :
+                {this.props.user.loan_account_id ?
                     <Grid container spacing={0}>
                         <Grid item xs={12}>
                             <h1>Bank Accounts</h1>
@@ -76,6 +66,16 @@ class Bank extends React.Component {
                                 <TabPanel value={this.state.tab} index={0} />
                                 <TabPanel value={this.state.tab} index={1} />
                             </div>
+                        </Grid>
+                    </Grid>:
+                    <Grid container spacing={0}>
+                        <Grid item xs={12}>
+                            <h1 className='text-center'>Looks like you have not created an bank account yet!</h1>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Button variant="contained" color="primary" fullWidth onClick={this.handleOpenAccount}>
+                                OPEN LOAN ACCOUNT
+                            </Button>
                         </Grid>
                     </Grid>
                 }
