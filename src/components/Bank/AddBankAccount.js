@@ -111,6 +111,7 @@ class AddBankAccount extends React.Component {
     };
 
     onSubmit = () =>{
+        console.log("1")
         axios.post('/users/createLoanAccount', {
             client_id: this.props.user.client_id,
             nric: this.props.user.nric,
@@ -118,6 +119,7 @@ class AddBankAccount extends React.Component {
             repaymentInstallments: this.state.loanInstallments,
             interestRate: this.calculateInterest(),
         }).then(res => {
+            console.log("2")
             if (res.status === 200) {
                 window.open('/bank',"_self")
             }

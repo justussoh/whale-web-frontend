@@ -17,6 +17,26 @@ class Card extends React.Component {
         isSnackOpen: false,
         severity: "success",
         cards: [],
+        card_number: '',
+        first_name: '',
+        last_name: '',
+        expiry_date: new Date(),
+    };
+
+    handleCardNumberChange = (e) => {
+        this.setState({card_number: e.target.value})
+    };
+
+    handleFirstNameChange = (e) => {
+        this.setState({first_name: e.target.value})
+    };
+
+    handleLastNameChange = (e) => {
+        this.setState({last_name: e.target.value})
+    };
+
+    handleExpiryChange = (date) => {
+        this.setState({expiry_date: date})
     };
 
     openModal = () => {
@@ -28,7 +48,7 @@ class Card extends React.Component {
     };
 
     openSnack = (severity) => {
-        this.setState({isSnackOpen: true, severity:severity })
+        this.setState({isSnackOpen: true, severity: severity})
     };
 
     closeSnack = () => {
@@ -37,7 +57,13 @@ class Card extends React.Component {
 
 
     addCard = () => {
-        axios.post('/api/addcard', {}).then(res => {
+        axios.post('/cards/create', {
+            card_number: this.state.card_number,
+            user_id: this.props.user.id,
+            first_name: this.state.first_name,
+            last_name: this.state.last_name,
+            expiry_date: this.state.expiry_date,
+        }).then(res => {
             if (res.status === 200) {
                 this.setState({cards: res.data});
                 this.closeModal();
@@ -70,10 +96,21 @@ class Card extends React.Component {
                         </div>
                     </Grid>
                 </Grid>
-                <AddCardModal open={this.state.isModalOpen} handleClose={this.closeModal} handleOpen={this.openModal}
-                              onSubmit={this.addCard}/>
+                <AddCardModal open={this.state.isModalOpen}
+                              handleClose={this.closeModal}
+                              handleOpen={this.openModal}
+                              onSubmit={this.addCard}
+                              handleCardNumberChange={this.handleCardNumberChange}
+                              handleExpiryChange={this.handleExpiryChange}
+                              handleFirstNameChange={this.handleFirstNameChange}
+                              handleLastNameChange={this.handleLastNameChange}
+                              card_number={this.state.card_number}
+                              first_name={this.state.first_name}
+                              last_name={this.state.last_name}
+                              expiry_date={this.state.expiry_date}
+                />
                 <ConfirmationSnackBar open={this.state.isSnackOpen} closeSnack={this.closeSnack}
-                                 severity={this.state.severity}/>
+                                      severity={this.state.severity}/>
             </Container>
         )
 

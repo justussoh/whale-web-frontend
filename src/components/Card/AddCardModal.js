@@ -9,6 +9,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Grid from '@material-ui/core/Grid';
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker,
+} from '@material-ui/pickers';
 
 class AddCardModal extends React.Component {
     render() {
@@ -35,15 +41,30 @@ class AddCardModal extends React.Component {
                                 margin="dense"
                                 fullWidth
                                 label="Card Number"
+                                value={this.props.card_number}
+                                onChange={this.props.handleCardNumberChange}
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={6}>
                             <TextField
                                 autoFocus
                                 variant="outlined"
                                 margin="dense"
                                 fullWidth
-                                label="Card Holder Name"
+                                label="First Name"
+                                value={this.props.first_name}
+                                onChange={this.props.handleFirstNameChange}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                autoFocus
+                                variant="outlined"
+                                margin="dense"
+                                fullWidth
+                                label="Last Name"
+                                value={this.props.last_name}
+                                onChange={this.props.handleLastNameChange}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -56,13 +77,21 @@ class AddCardModal extends React.Component {
                             />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
-                                autoFocus
-                                variant="outlined"
-                                margin="dense"
-                                fullWidth
-                                label="date"
-                            />
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <KeyboardDatePicker
+                                    disableToolbar
+                                    variant="inline"
+                                    format="MMyyyy"
+                                    margin="normal"
+                                    id="date-picker-inline"
+                                    label="Date picker inline"
+                                    value={this.props.expiry_date}
+                                    onChange={this.props.handleExpiryChange}
+                                    KeyboardButtonProps={{
+                                        'aria-label': 'change date',
+                                    }}
+                                />
+                            </MuiPickersUtilsProvider>
                         </Grid>
                     </Grid>
                 </DialogContent>

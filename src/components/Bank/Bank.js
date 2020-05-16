@@ -5,9 +5,10 @@ import Button from "@material-ui/core/Button";
 import history from "../../history";
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import axios from 'axios';
 
 function TabPanel(props) {
-    const { children, value, index, ...other } = props;
+    const { children, value, index,account, ...other } = props;
 
     return (
         <div
@@ -19,10 +20,10 @@ function TabPanel(props) {
         >
             {value === index && (
                 <div>
-                    <h3>Loan Amount</h3>
-                    <h3>Account Number</h3>
-                    <h3>Repayment</h3>
-                    <h3>Time</h3>
+                    <h3>{account.id}: {account.loanName}</h3>
+                    <h3>{account.loanAmount}</h3>
+                    <h3>{account.interestRate}</h3>
+                    <h3>{account.repaymentInstallments} weeks</h3>
                 </div>
             )}
         </div>
@@ -32,9 +33,24 @@ function TabPanel(props) {
 class Bank extends React.Component {
 
     state = {
-        accounts: [],
+        loanAccount: {},
         tab:0,
     };
+
+    componentDidMount() {
+
+        if (this.props.user.loan_account_id){
+            axios.post('/users/getLoanAccount',{
+                loanAccountId:this.props.user.loan_account_id
+            }).then(res => {
+                if (res.status === 200) {
+                    console.log(res.data)
+                    this.setState({loanAccount: res.data})
+                }
+            });
+
+        }
+    }
 
     handleOpenAccount = () => {
         history.push("/bank/open")
@@ -60,11 +76,9 @@ class Bank extends React.Component {
                                     variant="fullWidth"
                                     aria-label="full width tabs example"
                                 >
-                                    <Tab label="Account One"/>
-                                    <Tab label="Account Two"/>
+                                    <Tab label="Loan Account"/>
                                 </Tabs>
-                                <TabPanel value={this.state.tab} index={0} />
-                                <TabPanel value={this.state.tab} index={1} />
+                                <TabPanel value={this.state.tab} index={0} account={this.state.loanAccount}/>
                             </div>
                         </Grid>
                     </Grid>:

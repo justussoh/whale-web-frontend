@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, createContext } from "react";
 import  axios from "axios";
+import jwt from "jsonwebtoken"
 
 const authContext = createContext(null);
 
@@ -21,7 +22,7 @@ function useProvideAuth() {
             password:password
         }).then(res => {
             if (res.status === 200) {
-                let user = res.data;
+                let user = jwt.verify(res.data, 'testingtoken');
                 setUser(user);
                 setLocalStorageStatus(user);
                 return res.data;
@@ -94,7 +95,7 @@ function useProvideAuth() {
         loadAuthFromStore();
         // Cleanup subscription on unmount
         // return () => unsubscribe();
-    }, [user]);
+    }, []);
 
     // Return the user object and auth methods
     return {

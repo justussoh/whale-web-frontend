@@ -7,6 +7,7 @@ import DeleteEndorseeModal from "./DeleteEndorseeModal"
 import './Endorse.css';
 import ConfirmationSnackBar from "../Utils/ConfirmationSnackBar";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
+import axios from "axios";
 
 class Endorse extends React.Component {
     state = {
@@ -22,7 +23,35 @@ class Endorse extends React.Component {
 
     componentDidMount() {
         const baseUrl = window.location.origin;
-        this.setState({value: baseUrl + `/endorse/endorsement?endorseeId=${123}`})
+        this.setState({value: baseUrl + `/endorse/endorsement?endorseeId=${this.props.user.id}`})
+        let promiseArr = [];
+        for (let i of this.props.user.endorsers) {
+            let promise = axios.get(`/users/retrieveById?id=${i}`).then(res => {
+                if (res.status === 200) {
+                    return(res.data)
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+            promiseArr.push(promise)
+        }
+        Promise.all(promiseArr).then((arr) => {
+            this.setState({endorsers:arr})
+        });
+        promiseArr = [];
+        for (let i of this.props.user.endorsed) {
+            let promise = axios.get(`/users/retrieveById?id=${i}`).then(res => {
+                if (res.status === 200) {
+                    return(res.data)
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+            promiseArr.push(promise)
+        }
+        Promise.all(promiseArr).then((arr) => {
+            this.setState({endorsees:arr})
+        });
     }
 
     openModal = (index) => {
@@ -34,13 +63,21 @@ class Endorse extends React.Component {
     };
 
     deleteEndorsee = () => {
-        alert('deleted' + this.state.selected);
-        this.closeModal();
-        this.openSnack("success");
+        axios.post(`/users/removeEndorsement`, {
+            userToRemoveEndorsement: this.state.endorsees[this.state.selected].id,
+            unhappyUser: this.props.user.id,
+        }).then(res => {
+            if (res.status === 200) {
+                // this.openSnack("success");
+                setTimeout(() => window.location.reload(), 1000)
+            }
+        }).catch(err => {
+            console.log(err);
+        });
     };
 
     openSnack = (severity) => {
-        this.setState({isSnackOpen: true, severity:severity })
+        this.setState({isSnackOpen: true, severity: severity})
     };
 
     closeSnack = () => {
@@ -54,12 +91,12 @@ class Endorse extends React.Component {
                 <Grid item xs={10}>
                     <h1>Share this link with your friends to get endorsed!</h1>
                     <div>
-                        <input value={this.state.value}
-                               disabled/>
+                        <input value={this.state.value} disabled style={{width: "90%"}}/>
 
                         <CopyToClipboard text={this.state.value}
                                          onCopy={() => this.setState({copied: true})}>
-                            <button>{this.state.copied ? <span style={{color: 'red'}}>Copied.</span> : <span>Copy</span>}</button>
+                            <button>{this.state.copied ? <span style={{color: 'red'}}>Copied.</span> :
+                                <span>Copy</span>}</button>
                         </CopyToClipboard>
 
 
@@ -68,17 +105,21 @@ class Endorse extends React.Component {
                 <Grid item xs={5}>
                     <h1>Endorsers</h1>
                     <div>
-                        <DisplayEndorserUser/>
-                        <DisplayEndorserUser/>
-                        <DisplayEndorserUser/>
+                        {this.state.endorsers.map((endorser, index) => {
+                            return(
+                                <DisplayEndorserUser user={endorser} key={index} />
+                            )
+                        })}
                     </div>
                 </Grid>
                 <Grid item xs={5}>
                     <h1>Endorsees</h1>
                     <div>
-                        <DisplayEndorseeUser handleDeleteClick={this.openModal} index={0}/>
-                        <DisplayEndorseeUser handleDeleteClick={this.openModal} index={1}/>
-                        <DisplayEndorseeUser handleDeleteClick={this.openModal} index={2}/>
+                        {this.state.endorsees.map((endorser, index) => {
+                            return(
+                                <DisplayEndorseeUser user={endorser} key={index} handleDeleteClick={this.openModal} index={index}/>
+                            )
+                        })}
                     </div>
                 </Grid>
                 <DeleteEndorseeModal open={this.state.isModalOpen} handleClose={this.closeModal}

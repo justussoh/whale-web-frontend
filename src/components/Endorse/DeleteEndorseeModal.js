@@ -9,7 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
-class AddCardModal extends React.Component {
+class DeleteEndorseeModal extends React.Component {
     render() {
         return (
             <Dialog open={this.props.open} onClose={this.props.handleClose} aria-labelledby="form-dialog-title"
@@ -39,4 +39,4 @@ class AddCardModal extends React.Component {
 
 }
 
-export default AddCardModal;
+export default DeleteEndorseeModal;

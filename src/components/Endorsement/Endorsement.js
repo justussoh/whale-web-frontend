@@ -2,10 +2,12 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
+import Paper from '@material-ui/core/Paper';
 import history from "../../history";
 import {NavLink} from "react-router-dom";
 import queryString from 'query-string'
 import ConfirmationSnackBar from "../Utils/ConfirmationSnackBar";
+import axios from "axios";
 
 
 class Endorsement extends React.Component {
@@ -23,8 +25,17 @@ class Endorsement extends React.Component {
     }
 
     handleEndorse = () => {
-        this.openSnack("success");
-        setTimeout(()=>this.handleLink('/'), 1000)
+        axios.post(`/users/endorseUser`, {
+            userToEndorse: this.state.endorsee,
+            endorser: this.props.user.id,
+        }).then(res => {
+            if (res.status === 200) {
+                this.openSnack("success");
+                setTimeout(() => this.handleLink('/'), 1000)
+            }
+        }).catch(err => {
+            console.log(err);
+        });
     };
 
     handleLink = (link) => {
@@ -32,7 +43,7 @@ class Endorsement extends React.Component {
     };
 
     openSnack = (severity) => {
-        this.setState({isSnackOpen: true, severity:severity })
+        this.setState({isSnackOpen: true, severity: severity})
     };
 
     closeSnack = () => {
@@ -42,8 +53,9 @@ class Endorsement extends React.Component {
     render() {
         return (
             <>
-                {this.state.user ?
+                {this.props.user ?
                     <Container maxWidth='xs'>
+
                         <Grid container spacing={5} style={{padding: 30}}>
                             <Grid item xs={12}>
                                 <h1 className='text-center'>Do you want to endorse Justus!</h1>
@@ -54,7 +66,8 @@ class Endorsement extends React.Component {
                                 </Button>
                             </Grid>
                             <Grid item xs={6}>
-                                <Button variant="outlined" color="primary" fullWidth onClick={()=> this.handleLink('/')}>
+                                <Button variant="outlined" color="primary" fullWidth
+                                        onClick={() => this.handleLink('/')}>
                                     NO
                                 </Button>
                             </Grid>
@@ -64,23 +77,25 @@ class Endorsement extends React.Component {
                     </Container>
 
                     :
-                    <Grid container spacing={5} alignItems='stretch' justify='center' className='h-100'>
-                        <Grid item xs={12}>
-                            <h1>You need to be signed in to Endorse a user!</h1>
-                            <div>
-                                <NavLink to="/login" activeClassName="selected" style={{marginRight: 10}}>
-                                    <Button variant="contained" color="primary">
-                                        Sign Up
-                                    </Button>
-                                </NavLink>
-                                <NavLink to="/login" activeClassName="selected">
-                                    <Button variant="outlined" color="primary">
-                                        Login
-                                    </Button>
-                                </NavLink>
-                            </div>
+                    <Paper>
+                        <Grid container spacing={5} alignItems='stretch' justify='center' className='h-100'>
+                            <Grid item xs={12}>
+                                <h1>You need to be signed in to Endorse a user!</h1>
+                                <div>
+                                    <NavLink to="/login" activeClassName="selected" style={{marginRight: 10}}>
+                                        <Button variant="contained" color="primary">
+                                            Sign Up
+                                        </Button>
+                                    </NavLink>
+                                    <NavLink to="/login" activeClassName="selected">
+                                        <Button variant="outlined" color="primary">
+                                            Login
+                                        </Button>
+                                    </NavLink>
+                                </div>
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    </Paper>
                 }
             </>
         )
