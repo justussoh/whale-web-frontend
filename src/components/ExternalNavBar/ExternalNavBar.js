@@ -9,7 +9,7 @@ import "./ExternalNavBar.css"
 class ExternalNavBar extends React.Component {
     render() {
         return (
-            <AppBar position="static" style={{background: "none", marginTop: 15}} elevation={0}>
+            <AppBar position="static" style={{background: "none", paddingTop: 15}} elevation={0}>
                 <Toolbar>
                     <Link to="/" style={{marginRight: 40}}>
                         <img src='/images/logo.png' alt='logo' style={{height: 40}}/>

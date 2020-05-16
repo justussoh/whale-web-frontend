@@ -15,3 +15,17 @@
 .text{
   color: white;
 }
+
+.main-container{
+  height: calc(100vh - 79px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-container-auth{
+  height: calc(100vh - 64px);
+  width: calc(100vw - 240px);
+  margin-left: auto;
+  margin-top: 64px;
+}

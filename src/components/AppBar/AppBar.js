@@ -1,17 +1,17 @@
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
 
 
 class TopAppBar extends React.Component {
     render() {
         return (
-            <AppBar position="absolute">
+            <AppBar position="absolute" elevation={0} style={{background: "none"}}>
                 <Toolbar >
-                    <Typography component="h1" variant="h6" color="inherit" noWrap>
-                        Dashboard
-                    </Typography>
+                   <div className='ml-auto'>
+                       <Avatar>J</Avatar>
+                   </div>
                 </Toolbar>
             </AppBar>
         )

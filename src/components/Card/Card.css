@@ -1,0 +1,33 @@
+.transaction-history-icon{
+    height: 40px;
+    width: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-display-item{
+    background-color: #002845 !important;
+    width: 240px;
+    border-radius: 22px!important;
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.card-text{
+    color: white;
+}
+
+.card-sub-text{
+    color: #808080;
+    margin-bottom: 0px;
+}
+
+.card-list{
+
+}
+
+.closeButton {
+    color: #707070;
+}
