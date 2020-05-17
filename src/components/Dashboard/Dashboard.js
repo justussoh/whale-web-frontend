@@ -13,7 +13,7 @@ class Dashboard extends React.Component {
 
     state = {
         creditScore: 0,
-        transactions:[],
+        transactions: [],
     };
 
     componentDidMount() {
@@ -51,17 +51,20 @@ class Dashboard extends React.Component {
                     </Grid>
                     <Grid item xs={7} component={Paper}>
                         <h1>Recent Transactions</h1>
-                        {this.props.user.current_account_id?
-                            this.state.transactions.map((transaction, index)=>{
-                                return(
-                                    <TransactionHistoryItem transaction={transaction} key={index}/>
-                                )
-                            })
-                        :<div>
-                            <Button variant="contained" color="primary" fullWidth onClick={()=>history.push('/bank')}>
-                                OPEN AN ACCOUNT
-                            </Button>
-                        </div>
+                        {this.props.user.current_account_id ?
+                            <div>
+                                {this.state.transactions.map((transaction, index) => {
+                                    return (
+                                        <TransactionHistoryItem transaction={transaction} key={index}/>
+                                    )
+                                })}
+                            </div>
+                            : <div>
+                                <Button variant="contained" color="primary" fullWidth
+                                        onClick={() => history.push('/bank')}>
+                                    OPEN AN ACCOUNT
+                                </Button>
+                            </div>
                         }
 
                     </Grid>

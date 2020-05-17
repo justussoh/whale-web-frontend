@@ -17,11 +17,42 @@ class Card extends React.Component {
         isSnackOpen: false,
         severity: "success",
         cards: [],
+        transactions: [],
         card_number: '',
         first_name: '',
         last_name: '',
         expiry_date: new Date(),
     };
+
+    componentDidMount() {
+        axios.post(`/cards/findByUserId?id=${this.props.user.id}`, {}).then(res => {
+            if (res.status === 200) {
+                let cards = res.data;
+                let promiseArr = [];
+                let transactions =[];
+                for (let i of cards) {
+                    let promise = axios.post(`/cards/getCardTransactionHistory`,{
+                        card_number: i.card_number
+                    }).then(res => {
+                        if (res.status === 200) {
+                            return(res.data)
+                        }
+                    }).catch(err => {
+                        console.log(err);
+                    });
+                    promiseArr.push(promise)
+                }
+                Promise.all(promiseArr).then((arr) => {
+                    for (let x of arr){
+                        transactions.push(...x)
+                    }
+                });
+                this.setState({cards: cards, transactions})
+
+            }
+        });
+
+    }
 
     handleCardNumberChange = (e) => {
         this.setState({card_number: e.target.value})
@@ -65,9 +96,9 @@ class Card extends React.Component {
             expiry_date: this.state.expiry_date,
         }).then(res => {
             if (res.status === 200) {
-                this.setState({cards: res.data});
                 this.closeModal();
                 this.openSnack("success");
+                window.location.reload();
             }
         }).catch(err => {
             this.closeModal();
@@ -83,17 +114,25 @@ class Card extends React.Component {
                     <Grid item xs={12}>
                         <h1>Cards</h1>
                         <div className="card-list row ">
-                            <CardDisplayItem/>
+                            {this.state.cards.map((card, index)=>{
+                                return <CardDisplayItem key={index} card={card}/>
+                            })}
+
                             <AddCardItem openModal={this.openModal}/>
                         </div>
                     </Grid>
                     <Grid item xs={12}>
                         <h1>Recent Transactions</h1>
-                        <div>
-                            <TransactionHistoryItem/>
-                            <TransactionHistoryItem/>
-                            <TransactionHistoryItem/>
-                        </div>
+                        {this.state.transactions.length !== 0 ?
+                            <div>
+                                {this.state.transactions.map((transaction, index) => {
+                                    return (
+                                        <TransactionHistoryItem transaction={transaction} key={index}/>
+                                    )
+                                })}
+                            </div> :
+                            <h6>No transactions have been made</h6>
+                        }
                     </Grid>
                 </Grid>
                 <AddCardModal open={this.state.isModalOpen}

@@ -18,6 +18,7 @@ import ExternalNavBar from "./components/ExternalNavBar/ExternalNavBar";
 import About from "./components/About/About";
 import Card from "./components/Card/Card";
 import Bank from "./components/Bank/Bank";
+import Document from "./components/Document/Document";
 import Endorse from "./components/Endorse/Endorse";
 import Endorsement from "./components/Endorsement/Endorsement";
 import AddBankAccount from "./components/Bank/AddBankAccount";
@@ -40,7 +41,7 @@ export default function App() {
                                     <Route exact path="/bank/open" render={(props) => <AddBankAccount {...props} user={user}/>}/>
                                     <Route exact path="/endorse" render={(props) => <Endorse {...props} user={user}/>}/>
                                     <Route exact path="/endorse/endorsement" render={(props) => <Endorsement {...props} user={user}/>}/>
-                                    <Route exact path="/document" render={(props) => <Card {...props} user={user}/>}/>
+                                    <Route exact path="/document" render={(props) => <Document {...props} user={user}/>}/>
                                     <Route path="/" render={(props) => <Dashboard {...props} user={user}/>}/>
                                 </Switch>
                             </div>

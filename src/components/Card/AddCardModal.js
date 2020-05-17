@@ -81,7 +81,7 @@ class AddCardModal extends React.Component {
                                 <KeyboardDatePicker
                                     disableToolbar
                                     variant="inline"
-                                    format="MMyyyy"
+                                    format="MM/yyyy"
                                     margin="normal"
                                     id="date-picker-inline"
                                     label="Date picker inline"
