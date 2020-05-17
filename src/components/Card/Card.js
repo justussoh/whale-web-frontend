@@ -30,7 +30,9 @@ class Card extends React.Component {
                 let cards = res.data;
                 let promiseArr = [];
                 let transactions =[];
+                let results =[];
                 for (let i of cards) {
+                    console.log(i)
                     let promise = axios.post(`/cards/getCardTransactionHistory`,{
                         card_number: i.card_number
                     }).then(res => {
@@ -43,15 +45,11 @@ class Card extends React.Component {
                     promiseArr.push(promise)
                 }
                 Promise.all(promiseArr).then((arr) => {
-                    for (let x of arr){
-                        transactions.push(...x)
-                    }
+                    this.setState({transactions:arr})
                 });
-                this.setState({cards: cards, transactions})
-
+                this.setState({cards: cards})
             }
         });
-
     }
 
     handleCardNumberChange = (e) => {
@@ -107,7 +105,19 @@ class Card extends React.Component {
         });
     };
 
+    extract = () =>{
+        let res= [];
+        for (let x of this.state.transactions){
+            for (let y of x.transactions){
+                res.push(y)
+            }
+        }
+        return res
+    };
+
     render() {
+        const extractedTransactions = this.extract();
+
         return (
             <Container maxWidth='md' style={{marginLeft: 0}}>
                 <Grid container spacing={0}>
@@ -125,7 +135,7 @@ class Card extends React.Component {
                         <h1>Recent Transactions</h1>
                         {this.state.transactions.length !== 0 ?
                             <div>
-                                {this.state.transactions.map((transaction, index) => {
+                                {extractedTransactions.map((transaction, index) => {
                                     return (
                                         <TransactionHistoryItem transaction={transaction} key={index}/>
                                     )
