@@ -20,10 +20,11 @@ function TabPanel(props) {
         >
             {value === index && (
                 <div>
-                    <h3>{account.id}: {account.loanName}</h3>
-                    <h3>{account.loanAmount}</h3>
-                    <h3>{account.interestRate}</h3>
-                    <h3>{account.repaymentInstallments} weeks</h3>
+                    <h3>Account Id: {account.id}</h3>
+                    <h3>Purpose: {account.loanName}</h3>
+                    <h3>Amount: $ {account.loanAmount}</h3>
+                    <h3>Interest Rate: {account.interestRate}%</h3>
+                    <h3>Installments: {account.repaymentInstallments} weeks</h3>
                 </div>
             )}
         </div>
@@ -76,7 +77,7 @@ class Bank extends React.Component {
                                     variant="fullWidth"
                                     aria-label="full width tabs example"
                                 >
-                                    <Tab label="Loan Account"/>
+                                    <Tab label="Loan Details"/>
                                 </Tabs>
                                 <TabPanel value={this.state.tab} index={0} account={this.state.loanAccount}/>
                             </div>
@@ -84,7 +85,7 @@ class Bank extends React.Component {
                     </Grid>:
                     <Grid container spacing={0}>
                         <Grid item xs={12}>
-                            <h1 className='text-center'>Looks like you have not created an bank account yet!</h1>
+                            <h1 className='text-center'>Looks like you have not created a bank account yet!</h1>
                         </Grid>
                         <Grid item xs={6}>
                             <Button variant="contained" color="primary" fullWidth onClick={this.handleOpenAccount}>

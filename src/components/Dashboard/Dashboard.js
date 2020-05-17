@@ -33,6 +33,17 @@ class Dashboard extends React.Component {
         console.log(this.props.user);
     }
 
+    onPunishUser = () =>{
+        axios.post('/users/punishUser', {
+            nric: this.props.user.nric
+        }).then(res => {
+            if (res.status === 200) {
+                window.location.reload()
+            }
+        });
+    };
+
+
     render() {
         return (
             <Container maxWidth='xl' style={{marginLeft: 0}}>
@@ -70,6 +81,12 @@ class Dashboard extends React.Component {
                     </Grid>
                     <Grid item xs={5} component={Paper}>
                         <Loans user={this.props.user}/>
+                    </Grid>
+                    <Grid item xs={12} >
+                        <Button variant="contained" color="primary" fullWidth
+                                onClick={this.onPunishUser}>
+                            Trigger Default Loan Effect
+                        </Button>
                     </Grid>
                 </Grid>
             </Container>

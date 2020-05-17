@@ -14,6 +14,7 @@ class Endorsement extends React.Component {
 
     state = {
         endorsee: '',
+        endorseeData: {},
         user: true,
         isSnackOpen: false,
         severity: "success",
@@ -21,7 +22,14 @@ class Endorsement extends React.Component {
 
     componentDidMount() {
         const query = queryString.parse(this.props.location.search);
-        this.setState({endorsee: query.endorseeId})
+        axios.get(`/users/retrieveById?id=${query.endorseeId}`).then(res => {
+            if (res.status === 200) {
+                this.setState({endorsee: query.endorseeId, endorseeData: res.data})
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+
     }
 
     handleEndorse = () => {
@@ -58,7 +66,8 @@ class Endorsement extends React.Component {
 
                         <Grid container spacing={5} style={{padding: 30}}>
                             <Grid item xs={12}>
-                                <h1 className='text-center'>Do you want to endorse Justus!</h1>
+                                <h1 className='text-center'>Do you want to
+                                    endorse {this.state.endorseeData.first_name}{this.state.endorseeData.last_name}!</h1>
                             </Grid>
                             <Grid item xs={6}>
                                 <Button variant="contained" color="primary" fullWidth onClick={this.handleEndorse}>

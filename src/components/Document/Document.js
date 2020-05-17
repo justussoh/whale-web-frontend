@@ -6,7 +6,8 @@ class Document extends React.Component {
 
     state = {
         selectedFile: null,
-        loaded:0
+        loaded:0,
+        document:{}
     };
 
     onChangeHandler=event=>{
@@ -17,15 +18,20 @@ class Document extends React.Component {
     };
 
     onClickHandler = () => {
-        const data = new FormData();
-        data.append('file', this.state.selectedFile);
         axios.post("/documents/create", {
-            title:this.state.selectedFile.name,
-            file_path: data,
-            user_id:this.props.user.id
+            title: this.state.selectedFile.name,
+            user_id: this.props.user.id,
         }).then(res=>{
-            console.log(res.data)
-        })
+            let document = res.data;
+            axios.post("/documents/uploadDoc", {
+                id: document.id,
+                file_name:this.state.selectedFile,
+            }).then(res=>{
+                console.log(res.data)
+                this.setState({document:document})
+            })
+        });
+
     };
 
     render() {

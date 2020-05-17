@@ -12,7 +12,7 @@ class Loans extends React.Component {
                     :
                     <Grid container spacing={0} justify='center'>
                         <Grid item xs={12}>
-                            <h1 className='text-center'>Looks like you have not created an bank account yet!</h1>
+                            <h1 className='text-center'>Looks like you have not created a bank account yet!</h1>
                         </Grid>
                         <Grid item xs={6}>
                             <Button variant="contained" color="primary" fullWidth onClick={()=>history.push('/bank')}>

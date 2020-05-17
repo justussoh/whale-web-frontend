@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import PaymentIcon from '@material-ui/icons/Payment';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import VerifiedIcon from '@material-ui/icons/VerifiedUser';
+import LabelIcon from '@material-ui/icons/LabelImportant';
 import DescriptionIcon from '@material-ui/icons/Description';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import history from "../../history";
@@ -38,19 +39,23 @@ class NavDrawer extends React.Component {
                     </ListItem>
                     <ListItem button onClick={()=>this.handleLink('bank')}>
                         <ListItemIcon><AccountBalanceIcon /></ListItemIcon>
-                        <ListItemText primary="Bank" />
+                        <ListItemText primary="Bank Loans" />
                     </ListItem>
                     <ListItem button onClick={()=>this.handleLink('card')}>
                         <ListItemIcon><PaymentIcon /></ListItemIcon>
-                        <ListItemText primary="Card" />
+                        <ListItemText primary="Cards" />
                     </ListItem>
                     <ListItem button onClick={()=>this.handleLink('endorse')}>
-                        <ListItemIcon><VerifiedIcon /></ListItemIcon>
-                        <ListItemText primary="Endorse" />
+                        <ListItemIcon><LabelIcon /></ListItemIcon>
+                        <ListItemText primary="Endorsements" />
                     </ListItem>
                     <ListItem button onClick={()=>this.handleLink('document')}>
                         <ListItemIcon><DescriptionIcon /></ListItemIcon>
-                        <ListItemText primary="Document" />
+                        <ListItemText primary="Documents" />
+                    </ListItem>
+                    <ListItem button onClick={()=>this.handleLink('verify')}>
+                        <ListItemIcon><VerifiedIcon /></ListItemIcon>
+                        <ListItemText primary="Verify" />
                     </ListItem>
                 </List>
             </Drawer>

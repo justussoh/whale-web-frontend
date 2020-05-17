@@ -18,6 +18,7 @@ import ExternalNavBar from "./components/ExternalNavBar/ExternalNavBar";
 import About from "./components/About/About";
 import Card from "./components/Card/Card";
 import Bank from "./components/Bank/Bank";
+import Verify from "./components/Verify/Verify";
 import Document from "./components/Document/Document";
 import Endorse from "./components/Endorse/Endorse";
 import Endorsement from "./components/Endorsement/Endorsement";
@@ -37,6 +38,7 @@ export default function App() {
                             <div className='main-container-auth'>
                                 <Switch>
                                     <Route exact path="/card" render={(props) => <Card {...props} user={user}/>}/>
+                                    <Route exact path="/verify" render={(props) => <Verify {...props} user={user}/>}/>
                                     <Route exact path="/bank" render={(props) => <Bank {...props} user={user}/>}/>
                                     <Route exact path="/bank/open" render={(props) => <AddBankAccount {...props} user={user}/>}/>
                                     <Route exact path="/endorse" render={(props) => <Endorse {...props} user={user}/>}/>
