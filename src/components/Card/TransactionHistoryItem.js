@@ -23,10 +23,11 @@ class TransactionHistoryItem extends React.Component {
     render() {
         const {transaction} = this.props;
         let time = new Date(transaction.transactionDateTime);
+        let amount = transaction.transactionAmount.amount;
         return (
             <Card className='d-flex align-items-center' style={{padding:10}}>
-                <div className='transaction-history-icon' style={{backgroundColor: true ? 'red': 'white'}}>
-                    {transaction.transactionAmount.amount >=0 ?
+                <div className='transaction-history-icon' style={{backgroundColor: amount >=0 ? 'green': 'red'}}>
+                    {amount >=0 ?
                         <ArrowUpwardIcon/> :
                         <ArrowDownwardIcon/>
                     }
@@ -36,7 +37,7 @@ class TransactionHistoryItem extends React.Component {
                     <span>{time.toString()}</span>
                 </div>
                 <div className='ml-auto'>
-                    <span>{this.convertToCurrency(transaction.transactionAmount.amount)}</span>
+                    <span>{this.convertToCurrency(amount)}</span>
                 </div>
             </Card>
         )

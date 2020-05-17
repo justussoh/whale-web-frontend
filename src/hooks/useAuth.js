@@ -55,18 +55,8 @@ function useProvideAuth() {
     };
 
     const signOut = () => {
-        return axios.post('/api/auth/signout', {
-            user: user
-        }).then(res => {
-            if (res.data.error) {
-                window.alert(res.data.error);
-            } else {
-                setUser(false);
-                return res.data;
-            }
-        }).catch(err => {
-            console.log(err);
-        });
+        setUser(false);
+        window.localStorage.removeItem("userId")
     };
 
     const loadAuthFromStore = () =>{

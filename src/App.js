@@ -25,7 +25,7 @@ import AddBankAccount from "./components/Bank/AddBankAccount";
 import { useAuth} from "../src/hooks/useAuth"
 
 export default function App() {
-    const {user, signIn} = useAuth();
+    const {user, signIn, signOut} = useAuth();
 
     return (
         <React.Fragment>
@@ -33,7 +33,7 @@ export default function App() {
                     {user ?
                         <>
                             <NavDrawer/>
-                            <TopAppBar/>
+                            <TopAppBar user={user} signOut={signOut}/>
                             <div className='main-container-auth'>
                                 <Switch>
                                     <Route exact path="/card" render={(props) => <Card {...props} user={user}/>}/>

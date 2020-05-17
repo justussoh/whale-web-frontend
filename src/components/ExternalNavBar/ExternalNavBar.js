@@ -18,7 +18,7 @@ class ExternalNavBar extends React.Component {
                         ABOUT
                     </NavLink>
                     <div className='ml-auto'>
-                        <NavLink to="/login" activeClassName="selected" style={{marginRight: 10}}>
+                        <NavLink to="/signup" activeClassName="selected" style={{marginRight: 10}}>
                             <Button variant="contained" color="primary">
                                 Sign Up
                             </Button>

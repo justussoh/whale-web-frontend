@@ -29,8 +29,6 @@ class Card extends React.Component {
             if (res.status === 200) {
                 let cards = res.data;
                 let promiseArr = [];
-                let transactions =[];
-                let results =[];
                 for (let i of cards) {
                     console.log(i)
                     let promise = axios.post(`/cards/getCardTransactionHistory`,{
@@ -107,9 +105,14 @@ class Card extends React.Component {
 
     extract = () =>{
         let res= [];
-        for (let x of this.state.transactions){
-            for (let y of x.transactions){
-                res.push(y)
+        if (this.state.transactions > 0){
+            for (let x of this.state.transactions){
+                for (let y of x.transactions){
+                    if (y){
+                        res.push(y)
+
+                    }
+                }
             }
         }
         return res
@@ -123,7 +126,7 @@ class Card extends React.Component {
                 <Grid container spacing={0}>
                     <Grid item xs={12}>
                         <h1>Cards</h1>
-                        <div className="card-list row ">
+                        <div className="card-list row">
                             {this.state.cards.map((card, index)=>{
                                 return <CardDisplayItem key={index} card={card}/>
                             })}
@@ -133,7 +136,7 @@ class Card extends React.Component {
                     </Grid>
                     <Grid item xs={12}>
                         <h1>Recent Transactions</h1>
-                        {this.state.transactions.length !== 0 ?
+                        {extractedTransactions.length !== 0 ?
                             <div>
                                 {extractedTransactions.map((transaction, index) => {
                                     return (

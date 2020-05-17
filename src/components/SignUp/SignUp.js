@@ -1,14 +1,44 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import axios from 'axios';
+import history from "../../history";
 
 
 class SignUp extends React.Component {
+
+    state={
+        first_name:'',
+        last_name:'',
+        nric:'',
+        email:'',
+        password:'',
+        contact:'',
+    };
+
+    handleInputChange = (e) => {
+        const { name, value } = e.target;
+        this.setState({ [name]: value });
+    };
+
+    handleSubmit = () =>{
+        axios.post('/users/create', {
+            first_name: this.state.first_name,
+            last_name: this.state.last_name,
+            email: this.state.email,
+            nric: this.state.nric,
+            password: this.state.password,
+            contact_number:this.state.contact,
+        }).then(res => {
+            if(res.status === 200){
+                history.push('/login');
+            }
+        })
+    };
+
     render() {
         return (
             <Grid container spacing={5} alignItems='center' justify='center' alignContent='center' className='h-100'>
@@ -27,10 +57,11 @@ class SignUp extends React.Component {
                                 fullWidth
                                 id="email"
                                 label="First Name"
-                                name="email"
-                                autoComplete="email"
+                                name="first_name"
+                                autoComplete="fname"
                                 autoFocus
-
+                                value={this.state.first_name}
+                                onChange={this.handleInputChange}
                             />
 
                             <TextField
@@ -40,9 +71,10 @@ class SignUp extends React.Component {
                                 fullWidth
                                 id="email"
                                 label="Last Name"
-                                name="email"
-                                autoComplete="email"
-                                autoFocus
+                                name="last_name"
+                                autoComplete="lname"
+                                value={this.state.last_name}
+                                onChange={this.handleInputChange}
 
                             />
                             <TextField
@@ -52,9 +84,9 @@ class SignUp extends React.Component {
                                 fullWidth
                                 id="email"
                                 label="NRIC"
-                                name="email"
-                                autoComplete="email"
-                                autoFocus
+                                name="nric"
+                                value={this.state.nric}
+                                onChange={this.handleInputChange}
 
                             />
                                                         
@@ -67,7 +99,9 @@ class SignUp extends React.Component {
                                 label="Email"
                                 name="email"
                                 autoComplete="email"
-                                autoFocus
+                                value={this.state.email}
+                                onChange={this.handleInputChange}
+
                             />
 
                             <TextField
@@ -80,6 +114,8 @@ class SignUp extends React.Component {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
+                                value={this.state.password}
+                                onChange={this.handleInputChange}
                                 
                             />
 
@@ -90,9 +126,10 @@ class SignUp extends React.Component {
                                 fullWidth
                                 id="email"
                                 label="Contact Number"
-                                name="email"
-                                autoComplete="email"
-                                autoFocus
+                                name="contact"
+                                autoComplete="phone"
+                                value={this.state.contact}
+                                onChange={this.handleInputChange}
 
                             />
 
@@ -101,11 +138,12 @@ class SignUp extends React.Component {
                                 fullWidth
                                 variant="contained"
                                 color="primary"
+                                onClick={this.handleSubmit}
                             >
                                 Sign Up
                             </Button>
                             <Grid item>
-                                <Link href="/signup" variant="body2">
+                                <Link href="/login" variant="body2">
                                     {"Already have an account? Sign In"}
                                 </Link>
                             </Grid>
